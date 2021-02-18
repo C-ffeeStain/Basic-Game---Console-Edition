@@ -49,9 +49,9 @@ class Game:
                 elif nextcoord == self.lvl.generic["exit"]:
                     self.win = True
                 self.turn += 1
-                self.prev_playerX = self.lvl.player["x"]
+                self.lvl.player["prev_x"] = self.lvl.player["x"]
                 self.lvl.player["x"] -= 1
-                self.lvl.area[self.lvl.player["prev_y"]][self.prev_playerX] = self.lvl.generic["air"]
+                self.lvl.area[self.lvl.player["prev_y"]][self.lvl.player["prev_x"]] = self.lvl.generic["air"]
                 self.lvl.area[self.lvl.player["y"]][self.lvl.player["x"]] = self.lvl.generic["player"]
         elif direction == "d":
             nextcoord = self.lvl.area[self.lvl.player["y"]][self.lvl.player["x"] + 1]
@@ -61,9 +61,9 @@ class Game:
                 elif nextcoord == self.lvl.generic["exit"]:
                     self.win = True
                 self.turn += 1
-                self.prev_playerX = self.lvl.player["x"]
+                self.lvl.player["prev_x"] = self.lvl.player["x"]
                 self.lvl.player["x"] += 1
-                self.lvl.area[self.lvl.player["prev_y"]][self.prev_playerX] = self.lvl.generic["air"]
+                self.lvl.area[self.lvl.player["prev_y"]][self.lvl.player["prev_x"]] = self.lvl.generic["air"]
                 self.lvl.area[self.lvl.player["y"]][self.lvl.player["x"]] = self.lvl.generic["player"]
         elif direction == "w":
             nextcoord = self.lvl.area[self.lvl.player["y"] - 1][self.lvl.player["x"]]
@@ -75,7 +75,7 @@ class Game:
                 self.turn += 1
                 self.lvl.player["prev_y"] = self.lvl.player["y"]
                 self.lvl.player["y"] -= 1
-                self.lvl.area[self.lvl.player["prev_y"]][self.prev_playerX] = self.lvl.generic["air"]
+                self.lvl.area[self.lvl.player["prev_y"]][self.lvl.player["prev_x"]] = self.lvl.generic["air"]
                 self.lvl.area[self.lvl.player["y"]][self.lvl.player["x"]] = self.lvl.generic["player"]
         elif direction == "s":
             nextcoord = self.lvl.area[self.lvl.player["y"] + 1][self.lvl.player["x"]]
@@ -87,7 +87,7 @@ class Game:
                 self.lvl.player["prev_y"] = self.lvl.player["y"]
                 self.turn += 1
                 self.lvl.player["y"] += 1
-                self.lvl.area[self.lvl.player["prev_y"]][self.prev_playerX] = self.lvl.generic["air"]
+                self.lvl.area[self.lvl.player["prev_y"]][self.lvl.player["prev_x"]] = self.lvl.generic["air"]
                 self.lvl.area[self.lvl.player["y"]][self.lvl.player["x"]] = self.lvl.generic["player"]
                 
     def loop(self):
