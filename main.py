@@ -24,7 +24,6 @@ class Game:
             sys.exit(0)
         self.lvl.parse()
         self.lvl.set_vars()
-        self.lvl.get_plr_pos()
 
     def get_first_block(self, block):
         for i, v in enumerate(self.lvl.area):

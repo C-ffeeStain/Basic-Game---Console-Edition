@@ -29,6 +29,8 @@ class Level:
             level_json = json.loads(raw.read())
         self.score_appear_interval = level_json["score_appear_interval"]
         self.unlock_exit_score = level_json["unlock_exit_score"]
+        self.player["x"] = level_json["player"]["x"]
+        self.player["y"] = level_json["player"]["y"]
         for tile in self.tiles:
             self.generic[tile] = level_json["generic"][tile]
         
