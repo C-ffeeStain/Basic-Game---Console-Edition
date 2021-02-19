@@ -4,6 +4,8 @@ import levelparser
 import argparse
 import json
 
+from updater import self_update
+
 class Game:
     score = 0
     turn = 1
@@ -22,11 +24,13 @@ class Game:
                 data = json.loads(f.read())
                 print(json.dumps(data['generic'], sort_keys=True, indent=4))
             sys.exit(0)
+        self_update()
         self.lvl.parse()
         self.lvl.set_vars()
 
     def get_first_block(self, block):
         for i, v in enumerate(self.lvl.area):
+            print(f"{block!r}: {v!r}")
             if block in v:
                 return (i, v.index(block))
             return None
@@ -40,7 +44,6 @@ class Game:
                     return self.get_rnd_block(block)
              
     def move(self, direction):
-        direction = direction.lower()
         if direction == "a":
             nextcoord = self.lvl.area[self.lvl.player["y"]][self.lvl.player["x"] - 1]
             if nextcoord != self.lvl.generic["wall"]:
@@ -50,6 +53,7 @@ class Game:
                     self.win = True
                 self.turn += 1
                 self.lvl.player["prev_x"] = self.lvl.player["x"]
+                self.lvl.player["prev_y"] = self.lvl.player["y"]
                 self.lvl.player["x"] -= 1
                 self.lvl.area[self.lvl.player["prev_y"]][self.lvl.player["prev_x"]] = self.lvl.generic["air"]
                 self.lvl.area[self.lvl.player["y"]][self.lvl.player["x"]] = self.lvl.generic["player"]
@@ -61,6 +65,7 @@ class Game:
                 elif nextcoord == self.lvl.generic["exit"]:
                     self.win = True
                 self.turn += 1
+                self.lvl.player["prev_y"] = self.lvl.player["y"]
                 self.lvl.player["prev_x"] = self.lvl.player["x"]
                 self.lvl.player["x"] += 1
                 self.lvl.area[self.lvl.player["prev_y"]][self.lvl.player["prev_x"]] = self.lvl.generic["air"]
@@ -74,6 +79,7 @@ class Game:
                     self.win = True
                 self.turn += 1
                 self.lvl.player["prev_y"] = self.lvl.player["y"]
+                self.lvl.player["prev_x"] = self.lvl.player["x"]
                 self.lvl.player["y"] -= 1
                 self.lvl.area[self.lvl.player["prev_y"]][self.lvl.player["prev_x"]] = self.lvl.generic["air"]
                 self.lvl.area[self.lvl.player["y"]][self.lvl.player["x"]] = self.lvl.generic["player"]
@@ -84,8 +90,9 @@ class Game:
                     self.score += 1
                 elif nextcoord == self.lvl.generic["exit"]:
                     self.win = True
-                self.lvl.player["prev_y"] = self.lvl.player["y"]
                 self.turn += 1
+                self.lvl.player["prev_y"] = self.lvl.player["y"]
+                self.lvl.player["prev_x"] = self.lvl.player["x"]
                 self.lvl.player["y"] += 1
                 self.lvl.area[self.lvl.player["prev_y"]][self.lvl.player["prev_x"]] = self.lvl.generic["air"]
                 self.lvl.area[self.lvl.player["y"]][self.lvl.player["x"]] = self.lvl.generic["player"]
@@ -115,15 +122,12 @@ class Game:
                     else:
                         count = 1
                         print(tile)
-            
+            direction = input("Enter a direction to move (w, a, s, or d) or 'q' to quit: ")
+            if direction == 'q':
+                sys.exit(0)
             print("\nScore: " + str(self.score) + "\n")
             if self.win == True:
                 print("Congrats! You win!")
                 sys.exit(0)
-            direction = input(
-                "\nEnter a direction (w, a, s, or d), or type 'q' to quit: ")
-            if (direction == 'q'):
-                sys.exit(0)
             self.move(direction)
-
 Game(sys.argv[1:]).loop()
