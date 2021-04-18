@@ -1,0 +1,39 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Build Beta
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.7
+      uses: actions/setup-python@v2
+      with:
+        python-version: 3.7
+    - name: Build main.py
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyintaller
+        pyinstaller --onefile --icon NONE main.py
+        mv dist/main.exe dist/game.exe
+    - name: Create beta release
+      uses: marvinpinto/action-automatic-releases@v1.1.0
+      env:
+          ACTIONS_ALLOW_UNSECURE_COMMANDS: "true"
+      with:
+          repo_token: "${{ secrets.GITHUB_TOKEN }}"
+          automatic_release_tag: "beta"
+          prerelease: true
+          title: "Basic Game BETA"
+          files: |
+            dist/game.exe
