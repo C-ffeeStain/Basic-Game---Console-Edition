@@ -20,7 +20,7 @@ jobs:
     - name: Build main.py
       run: |
         python -m pip install --upgrade pip
-        pip install pyintaller
+        pip install PyInstaller
         pyinstaller --onefile --icon NONE main.py
         mv dist/main.exe dist/game.exe
     - name: Create beta release
