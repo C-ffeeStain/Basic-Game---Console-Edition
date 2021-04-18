@@ -1,17 +1,4 @@
 {
-    "generic": 
-    {
-        "air": " ",
-        "wall": "1",
-        "player": "2",
-        "score": "3",
-        "exit": "E"
-    },
-    "player":
-    {
-        "x": 5,
-        "y": 2
-    },
     "unlock_exit_score": 10,
     "score_appear_interval": 4
 }
