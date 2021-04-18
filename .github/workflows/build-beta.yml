@@ -22,6 +22,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install PyInstaller
         pyinstaller --onefile --icon NONE main.py
+        cd dist
         ls
         mv dist/main.exe dist/game.exe
     - name: Create beta release
